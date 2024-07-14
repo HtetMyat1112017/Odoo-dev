@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <record id="test_model_tree" model="ir.ui.view">
+        <field name="name">Properties tree</field>
+        <field name="model">real.estate</field>
+        <field name="arch" type="xml">
+            <tree>
+                <field name="name"/>
+                <field name="postCode"/>
+                <field name="bedrooms"/>
+                <field name="living_area"/>
+                <field name="expected_price"/>
+                <field name="selling_price"/>
+                <field name="last_seen"/>
+                
+            </tree>
+        </field>
+    </record>
+    <record id="test_model_form" model="ir.ui.view">
+        <field name="name">Properties form</field>
+        <field name="model">real.estate</field>
+        <field name="arch" type="xml">
+            <form>
+                <header>
+                    <field name="state" widget="statusbar" class="oe_highlight" statusbar_visible='new,offer_received,offer_accepted'/>
+                    <button name="action_sold" type="object" string="Sold"></button>
+                    <button name="action_cancel" confirm="Are you sure to cancel" type="object" string="Cancel"></button>
+                </header>
+                <sheet>
+                    <group>
+                        <group>
+                           <h1>Title <field name="name"/></h1>
+                           <br/>
+                           <p> <field name="property_tag" widget="badge many2many_tag"/></p>
+                        </group>
+                  
+                        <group>
+                           
+                            <field name="property_type"/>
+                            <field name="postCode"/>
+                            <field name="last_seen"/>
+                        </group>
+                        <group>
+                            <field name="expected_price"/>
+                            <field name="selling_price"/>
+                        </group>
+                        
+                    </group>
+                    <notebook>
+                        <page string="Description">
+                            <p>Description :    <field name="description"/></p>
+                            <p>BedRooms    :    <field name="bedrooms"/></p>
+                            <p>Living Area  :   <field name="living_area"/>(sql)</p>
+                            <p>Facades   :      <field name="facades"/></p>
+                            <p>Garage    :      <field name="garage"/></p>
+                            <p>Garden    :      <field name="garden"/></p>
+                            <p>Garden Area   :  <field name="garden_area"/></p>
+                            <p>Total Area    : <field name="total_area"/></p>
+                            <p>Garden Orientation    :      <field name="garden_orientation"/></p>
+                        </page>
+                        <page string="Offer" name="offer">
+                            <field name="offer_id" >
+                                <tree>
+                                    <field name="price" />
+                                    <field name="status" />
+                                    <field name="partner" />
+                                </tree>
+                                <form>
+                                    <field name="price" />
+                                    <field name="status" />
+                                    <field name="partner" />
+                                </form>
+                           </field>
+                        </page>
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
+    <record id="test_model_search" model="ir.ui.view">
+        <field name="name">Properties search</field>
+        <field name="model">real.estate</field>
+        <field name="arch" type="xml">
+            <search>
+                <field name="name" string="Name" filter_domain="['|',('name,'ilike','self'),('postCode','ilike','self'),('expected_price','ilike','self')]"/>
+                <field name="postCode" string="Post Code"/>
+                <field name="expected_price" string="Expected Price"/>
+
+                <group expand="0" string="Group By">
+                    <filter string="postCode" name="PostCode" context="{'group_by':'postCode'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <record id="test_model_action" model="ir.actions.act_window">
+        <field name="name">Properties</field>
+        <field name="res_model">real.estate</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+    
+    <menuitem id="test_model_menu_action" action="test_model_action" parent="estate_first_level_menu" name="Properties"/>
+
+</odoo>
